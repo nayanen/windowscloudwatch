@@ -1,0 +1,24 @@
+{
+  "isEnabled" : true,
+  "EngineConfiguration": {
+    "PollInterval": "00:00:15",
+    "Components": [
+      <% counter = 0
+      @logfiles.each  do |section_name, section_config| %>
+      <% counter = counter + 1 %>
+      {
+        "Id": "<%= section_name %>",
+        "Parameters": {
+          <%= section_config.map { |key, val|
+          %Q["#{key}": "#{val}"] }.join(",\n") %>
+        }
+      }<%= ","  unless @logfiles.size == counter %>
+      <% end %>
+    ]
+    "Flows": {
+      "Flows": [<% @flows.each do |flow| %>
+               "<%= flow %>"<%= "," unless flow == @flows.last %>
+                <% end %>]
+    }
+  }
+}
